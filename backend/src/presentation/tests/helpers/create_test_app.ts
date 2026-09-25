@@ -5,7 +5,6 @@ import { ContaServices, MesaServices, SalaServices } from "../../../app";
 import { Logger } from "../../../infra";
 import {
   authMiddleware,
-  corsMiddleware,
   errorLoggingMiddleware,
   requestLoggingMiddleware,
   securityMiddleware,
@@ -33,10 +32,9 @@ export type TestServices = {
 /**
  * Builds an Express app mirroring createApp, with controllers wired to the
  * provided service doubles so HTTP integration tests do not hit the database.
+ * CORS is omitted: Supertest is not a browser and does not need it.
  */
 export function create_test_app(services: TestServices): Express {
-  process.env.CORS_ORIGIN ??= "http://localhost:3000";
-
   if (!container.isRegistered(Logger)) {
     container.registerInstance(Logger, silent_logger);
   }
@@ -47,7 +45,6 @@ export function create_test_app(services: TestServices): Express {
 
   const app = express();
   app.use(securityMiddleware());
-  app.use(corsMiddleware());
   app.use(requestLoggingMiddleware());
   app.use(authMiddleware);
   app.use(express.json());
