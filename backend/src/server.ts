@@ -1,16 +1,15 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { loadDotenv } from "./shared";
+import { loadDotenv, requireServerEnv } from "./shared";
 import { applyMigrations, DatabaseContext, Logger } from "./infra";
 import { createApp } from "./createApp";
-import { requireEnv } from "./shared";
 
 async function main() {
   loadDotenv();
 
   const logger = container.resolve(Logger);
 
-  const { host, port } = requireEnv();
+  const { host, port } = requireServerEnv();
 
   const databaseContext = container.resolve(DatabaseContext);
 

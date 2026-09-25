@@ -1,14 +1,17 @@
 import { defineConfig } from "drizzle-kit";
+import { requireDbEnv } from "../../shared";
+
+const { host, port, user, password, database } = requireDbEnv();
 
 export default defineConfig({
   dialect: "mysql",
   schema: "./src/infra/database/mysql/schema",
   out: "./migrations",
   dbCredentials: {
-    host: process.env.DB_HOST!,
-    port: Number(process.env.DB_PORT),
-    user: process.env.DB_USER!,
-    password: process.env.DB_PASSWORD!,
-    database: process.env.DB_NAME!,
+    host,
+    port,
+    user,
+    password,
+    database,
   },
 });

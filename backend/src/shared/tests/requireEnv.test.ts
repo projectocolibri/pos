@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { requireEnv } from "../requireEnv";
+import { requireEnv, requireServerEnv } from "../requireEnv";
 
 describe("requireEnv", () => {
   const valid = {
-    HOST: "localhost",
-    PORT: "3306",
-    USER: "root",
-    PASSWORD: "secret",
-    DATABASE: "pos",
+    DB_HOST: "localhost",
+    DB_PORT: "3306",
+    DB_USER: "root",
+    DB_PASSWORD: "secret",
+    DB_NAME: "pos",
   };
 
-  it("returns parsed credentials when all HOST, USER, PASSWORD and DATABASE are set", () => {
+  it("returns parsed credentials when all DB_* vars are set", () => {
     expect(requireEnv(valid)).toEqual({
       host: "localhost",
       port: 3306,
@@ -21,13 +21,39 @@ describe("requireEnv", () => {
   });
 
   it("rejects missing required string vars", () => {
-    expect(() => requireEnv({ ...valid, HOST: "" })).toThrow(
-      "HOST, USER, PASSWORD e DATABASE têm de estar definidos!",
+    expect(() => requireEnv({ ...valid, DB_HOST: "" })).toThrow(
+      "DB_HOST, DB_USER, DB_PASSWORD e DB_NAME têm de estar definidos!",
+    );
+  });
+
+  it("rejects non-numeric DB_PORT", () => {
+    expect(() => requireEnv({ ...valid, DB_PORT: "abc" })).toThrow(
+      "DB_PORT tem de ser um número válido!",
+    );
+  });
+});
+
+describe("requireServerEnv", () => {
+  const valid = {
+    HOST: "0.0.0.0",
+    PORT: "3000",
+  };
+
+  it("returns parsed host and port when set", () => {
+    expect(requireServerEnv(valid)).toEqual({
+      host: "0.0.0.0",
+      port: 3000,
+    });
+  });
+
+  it("rejects missing HOST", () => {
+    expect(() => requireServerEnv({ ...valid, HOST: "" })).toThrow(
+      "HOST tem de estar definido!",
     );
   });
 
   it("rejects non-numeric PORT", () => {
-    expect(() => requireEnv({ ...valid, PORT: "abc" })).toThrow(
+    expect(() => requireServerEnv({ ...valid, PORT: "abc" })).toThrow(
       "PORT tem de ser um número válido!",
     );
   });

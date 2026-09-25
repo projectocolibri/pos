@@ -1,4 +1,4 @@
-export type Env = {
+export type DbEnv = {
   host: string;
   port: number;
   user: string;
@@ -6,15 +6,20 @@ export type Env = {
   database: string;
 };
 
+export type ServerEnv = {
+  host: string;
+  port: number;
+};
+
 /**
  * Reads and validates DB_* environment variables. Throws before any pool is created.
  */
-export function requireEnv(env: NodeJS.ProcessEnv = process.env): Env {
-  const host = env.HOST?.trim();
-  const user = env.USER?.trim();
-  const password = env.PASSWORD;
-  const database = env.DATABASE?.trim();
-  const port = Number(env.PORT);
+export function requireDbEnv(env: NodeJS.ProcessEnv = process.env): DbEnv {
+  const host = env.DB_HOST?.trim();
+  const user = env.DB_USER?.trim();
+  const password = env.DB_PASSWORD;
+  const database = env.DB_NAME?.trim();
+  const port = Number(env.DB_PORT);
 
   if (
     !host ||
@@ -23,12 +28,34 @@ export function requireEnv(env: NodeJS.ProcessEnv = process.env): Env {
     password === "" ||
     !database
   ) {
-    throw new Error("HOST, USER, PASSWORD e DATABASE têm de estar definidos!");
+    throw new Error(
+      "DB_HOST, DB_USER, DB_PASSWORD e DB_NAME têm de estar definidos!",
+    );
+  }
+
+  if (!Number.isFinite(port)) {
+    throw new Error("DB_PORT tem de ser um número válido!");
+  }
+
+  return { host, port, user, password, database };
+}
+
+/**
+ * Reads and validates HOST and PORT for the HTTP server.
+ */
+export function requireServerEnv(
+  env: NodeJS.ProcessEnv = process.env,
+): ServerEnv {
+  const host = env.HOST?.trim();
+  const port = Number(env.PORT);
+
+  if (!host) {
+    throw new Error("HOST tem de estar definido!");
   }
 
   if (!Number.isFinite(port)) {
     throw new Error("PORT tem de ser um número válido!");
   }
 
-  return { host, port, user, password, database };
+  return { host, port };
 }
