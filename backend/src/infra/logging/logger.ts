@@ -1,35 +1,52 @@
-import pino from "pino";
+import { createRequire } from "node:module";
+import pino, { type Logger as PinoLogger } from "pino";
 import { injectable } from "tsyringe";
 
-const isDev = process.env.NODE_ENV !== "production";
+const require = createRequire(import.meta.url);
 
-const logger = pino({
-  level: isDev ? "debug" : "info",
-});
+function createPinoLogger(): PinoLogger {
+  const isDev = process.env.NODE_ENV !== "production";
+
+  if (isDev) {
+    const pretty = require("pino-pretty");
+    return pino(
+      { level: "debug" },
+      pretty({ colorize: true, translateTime: "HH:MM:ss" }),
+    );
+  }
+
+  return pino({ level: "info" });
+}
 
 @injectable()
 export class Logger {
+  private readonly logger: PinoLogger;
+
+  public constructor() {
+    this.logger = createPinoLogger();
+  }
+
   debug(message: string, meta?: object): void {
     if (meta !== undefined) {
-      logger.debug(meta, message);
+      this.logger.debug(meta, message);
       return;
     }
-    logger.debug(message);
+    this.logger.debug(message);
   }
 
   info(message: string, meta?: object): void {
     if (meta !== undefined) {
-      logger.info(meta, message);
+      this.logger.info(meta, message);
       return;
     }
-    logger.info(message);
+    this.logger.info(message);
   }
 
   error(error: Error, meta?: object): void {
     if (meta !== undefined) {
-      logger.error({ ...meta, err: error }, error.message);
+      this.logger.error({ ...meta, err: error }, error.message);
       return;
     }
-    logger.error(error);
+    this.logger.error(error);
   }
 }

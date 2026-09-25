@@ -1,0 +1,10 @@
+{
+    "name": "pos",
+    "private": true,
+    "scripts": {
+        "install": "npm --prefix backend install",
+        "dev": "npm --prefix backend run dev",
+        "prod": "npm --prefix backend run prod",
+        "test": "npm --prefix backend run test"
+    }
+}

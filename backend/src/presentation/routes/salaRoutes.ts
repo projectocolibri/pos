@@ -4,14 +4,26 @@ import { SalaController } from "../controllers";
 
 const salaRoutes = Router();
 
-const salaController = container.resolve(SalaController);
-
-salaRoutes.get("/sala/count", (req, res) => salaController.count(req, res));
-salaRoutes.get("/sala/list", (req, res) => salaController.list(req, res));
-salaRoutes.get("/sala/load", (req, res) => salaController.load(req, res));
-salaRoutes.post("/sala/store", (req, res) => salaController.store(req, res));
-salaRoutes.delete("/sala/delete", (req, res) => salaController.delete(req, res));
-salaRoutes.post("/sala/new", (req, res) => salaController.new(req, res));
-salaRoutes.put("/sala/set", (req, res) => salaController.set(req, res));
+salaRoutes.get("/sala/count", (req, res) =>
+  container.resolve(SalaController).count(req, res),
+);
+salaRoutes.get("/sala/list", (req, res) =>
+  container.resolve(SalaController).list(req, res),
+);
+salaRoutes.get("/sala/load", (req, res) =>
+  container.resolve(SalaController).load(req, res),
+);
+salaRoutes.post("/sala/store", (req, res) =>
+  container.resolve(SalaController).store(req, res),
+);
+salaRoutes.delete("/sala/delete", (req, res) =>
+  container.resolve(SalaController).delete(req, res),
+);
+salaRoutes.post("/sala/new", (req, res) =>
+  container.resolve(SalaController).new(req, res),
+);
+salaRoutes.put("/sala/set", (req, res) =>
+  container.resolve(SalaController).set(req, res),
+);
 
 export { salaRoutes };
