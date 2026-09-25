@@ -5,11 +5,12 @@ import {
   primaryKey,
   varchar,
 } from "drizzle-orm/mysql-core";
-import { contaSchema } from "./conta.schema";
+import { contaSchema } from "./contaSchema";
 
 export const artigoSchema = mysqlTable(
   "artigo",
   {
+    nifEmpresa: varchar("nifEmpresa", { length: 9 }).notNull(),
     contaId: varchar("contaId", { length: 36 }).notNull(),
     codigoArtigo: varchar("codigoArtigo", { length: 50 }).notNull(),
     quantidade: int("quantidade").notNull(),
@@ -18,12 +19,12 @@ export const artigoSchema = mysqlTable(
   (table) => [
     primaryKey({
       name: "pk_artigo",
-      columns: [table.contaId, table.codigoArtigo],
+      columns: [table.nifEmpresa, table.contaId, table.codigoArtigo],
     }),
     foreignKey({
       name: "fk_artigo_conta",
-      columns: [table.contaId],
-      foreignColumns: [contaSchema.contaId],
+      columns: [table.nifEmpresa, table.contaId],
+      foreignColumns: [contaSchema.nifEmpresa, contaSchema.contaId],
     }),
   ],
 );
