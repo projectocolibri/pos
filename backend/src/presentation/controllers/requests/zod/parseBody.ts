@@ -1,7 +1,7 @@
 import { z, ZodError, ZodType } from "zod";
 import { Request } from "express";
 
-export function parse_body<T extends ZodType>(
+export function parseBody<T extends ZodType>(
   req: Request,
   schema: T,
 ): z.infer<T> {

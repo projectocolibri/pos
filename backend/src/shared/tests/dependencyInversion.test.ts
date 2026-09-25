@@ -183,9 +183,9 @@ describe("dependency inversion — container wiring", () => {
     expect(container.resolve<IContaRepo>(TOKENS.IContaRepo)).toBeInstanceOf(
       ContaRepo,
     );
-    expect(
-      container.resolve<IIdGenerator>(TOKENS.IIdGenerator),
-    ).toBeInstanceOf(IdGenerator);
+    expect(container.resolve<IIdGenerator>(TOKENS.IIdGenerator)).toBeInstanceOf(
+      IdGenerator,
+    );
   });
 
   it("resolves the same singletons for all consumers", () => {
@@ -253,9 +253,7 @@ describe("dependency inversion — substitutable ports", () => {
     container.registerSingleton(ContaServices);
 
     const services = container.resolve(ContaServices);
-    await expect(
-      services.count_conta("999999990", "mesa-1"),
-    ).resolves.toBe(2);
+    await expect(services.count("999999990", "mesa-1")).resolves.toBe(2);
     expect(count).toHaveBeenCalledWith("999999990", "mesa-1");
   });
 

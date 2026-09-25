@@ -12,17 +12,17 @@ export class ContaServices {
     @inject(TOKENS.IIdGenerator) private readonly idGenerator: IIdGenerator,
   ) {}
 
-  async count_conta(nifEmpresa: string, mesaId: string): Promise<number> {
+  async count(nifEmpresa: string, mesaId: string): Promise<number> {
     return this.contaRepo.count(nifEmpresa, mesaId);
   }
 
-  async list_conta(nifEmpresa: string, mesaId: string): Promise<ContaDTO[]> {
+  async list(nifEmpresa: string, mesaId: string): Promise<ContaDTO[]> {
     return this.contaRepo
       .list(nifEmpresa, mesaId)
       .then((contas) => contas.map((conta) => ContaMapper.toDTO(conta)));
   }
 
-  async load_conta(
+  async load(
     nifEmpresa: string,
     mesaId: string,
     contaId: string,
@@ -32,13 +32,13 @@ export class ContaServices {
       .then((conta) => ContaMapper.toDTO(conta));
   }
 
-  async store_conta(nifEmpresa: string, contaDTO: ContaDTO): Promise<ContaDTO> {
+  async store(nifEmpresa: string, contaDTO: ContaDTO): Promise<ContaDTO> {
     return this.contaRepo
       .store(nifEmpresa, ContaMapper.toDomain(contaDTO))
       .then((conta) => ContaMapper.toDTO(conta));
   }
 
-  async delete_conta(
+  async delete(
     nifEmpresa: string,
     mesaId: string,
     contaId: string,
@@ -46,7 +46,7 @@ export class ContaServices {
     return this.contaRepo.delete(nifEmpresa, mesaId, contaId);
   }
 
-  async new_conta(
+  async new(
     nifEmpresa: string,
     mesaId: string,
     nome: string,
@@ -62,7 +62,7 @@ export class ContaServices {
       .then((stored) => ContaMapper.toDTO(stored));
   }
 
-  async set_conta(
+  async set(
     nifEmpresa: string,
     mesaId: string,
     contaId: string,
@@ -76,7 +76,7 @@ export class ContaServices {
       .then((stored) => ContaMapper.toDTO(stored));
   }
 
-  async add_artigo_conta(
+  async addArtigo(
     nifEmpresa: string,
     mesaId: string,
     contaId: string,
@@ -89,7 +89,7 @@ export class ContaServices {
       .then((stored) => ContaMapper.toDTO(stored));
   }
 
-  async remove_artigo_conta(
+  async removeArtigo(
     nifEmpresa: string,
     mesaId: string,
     contaId: string,

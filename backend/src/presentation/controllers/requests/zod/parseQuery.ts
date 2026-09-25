@@ -1,11 +1,11 @@
 import { z, ZodError, ZodType } from "zod";
 import { Request } from "express";
 
-export function parse_query<T extends ZodType>(
+export function parseQuery<T extends ZodType>(
   req: Request,
   schema: T,
 ): z.infer<T> {
-  const result = schema.safeParse(normalize_query(req.query));
+  const result = schema.safeParse(normalizeQuery(req.query));
   if (!result.success) {
     throw new ZodError(result.error.issues);
   }
@@ -15,7 +15,7 @@ export function parse_query<T extends ZodType>(
 /**
  * Flattens Express query values (string | string[]) to a single string per key.
  */
-function normalize_query(
+function normalizeQuery(
   query: Request["query"],
 ): Record<string, string | undefined> {
   const result: Record<string, string | undefined> = {};

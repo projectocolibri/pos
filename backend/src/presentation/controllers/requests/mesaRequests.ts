@@ -1,8 +1,8 @@
 import { Request } from "express";
 import { MesaDTO } from "../../../app/dtos";
 import {
-  parse_body,
-  parse_query,
+  parseBody,
+  parseQuery,
   mesa_sala_query,
   mesa_load_query,
   mesa_store_body,
@@ -13,12 +13,12 @@ import {
 
 export class MesaRequests {
   static count(req: Request): { nifEmpresa: string; salaId: string } {
-    const { salaId } = parse_query(req, mesa_sala_query);
+    const { salaId } = parseQuery(req, mesa_sala_query);
     return { nifEmpresa: req.nifEmpresa, salaId };
   }
 
   static list(req: Request): { nifEmpresa: string; salaId: string } {
-    const { salaId } = parse_query(req, mesa_sala_query);
+    const { salaId } = parseQuery(req, mesa_sala_query);
     return { nifEmpresa: req.nifEmpresa, salaId };
   }
 
@@ -27,12 +27,12 @@ export class MesaRequests {
     salaId: string;
     mesaId: string;
   } {
-    const { salaId, mesaId } = parse_query(req, mesa_load_query);
+    const { salaId, mesaId } = parseQuery(req, mesa_load_query);
     return { nifEmpresa: req.nifEmpresa, salaId, mesaId };
   }
 
   static store(req: Request): { nifEmpresa: string; mesaDTO: MesaDTO } {
-    const { mesaDTO } = parse_body(req, mesa_store_body);
+    const { mesaDTO } = parseBody(req, mesa_store_body);
     return {
       nifEmpresa: req.nifEmpresa,
       mesaDTO: MesaDTO.create({
@@ -47,7 +47,7 @@ export class MesaRequests {
     salaId: string;
     mesaId: string;
   } {
-    const { salaId, mesaId } = parse_body(req, mesa_delete_body);
+    const { salaId, mesaId } = parseBody(req, mesa_delete_body);
     return { nifEmpresa: req.nifEmpresa, salaId, mesaId };
   }
 
@@ -56,7 +56,7 @@ export class MesaRequests {
     salaId: string;
     nomeMesa: string;
   } {
-    const { salaId, nomeMesa } = parse_body(req, mesa_new_body);
+    const { salaId, nomeMesa } = parseBody(req, mesa_new_body);
     return { nifEmpresa: req.nifEmpresa, salaId, nomeMesa };
   }
 
@@ -67,7 +67,7 @@ export class MesaRequests {
     key: string;
     value: unknown;
   } {
-    const { salaId, mesaId, key, value } = parse_body(req, mesa_set_body);
+    const { salaId, mesaId, key, value } = parseBody(req, mesa_set_body);
     return { nifEmpresa: req.nifEmpresa, salaId, mesaId, key, value };
   }
 }

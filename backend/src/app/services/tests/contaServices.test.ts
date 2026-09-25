@@ -13,7 +13,7 @@ describe("ContaServices", () => {
       stub_id_generator("id"),
     );
 
-    await expect(services.count_conta("999999990", "mesa-1")).resolves.toBe(2);
+    await expect(services.count("999999990", "mesa-1")).resolves.toBe(2);
     expect(count).toHaveBeenCalledWith("999999990", "mesa-1");
   });
 
@@ -28,7 +28,7 @@ describe("ContaServices", () => {
       stub_id_generator("id"),
     );
 
-    const result = await services.list_conta("999999990", "mesa-1");
+    const result = await services.list("999999990", "mesa-1");
 
     expect(list).toHaveBeenCalledWith("999999990", "mesa-1");
     expect(result).toHaveLength(2);
@@ -44,11 +44,7 @@ describe("ContaServices", () => {
       stub_id_generator("id"),
     );
 
-    const result = await services.load_conta(
-      "999999990",
-      "mesa-1",
-      "conta-1",
-    );
+    const result = await services.load("999999990", "mesa-1", "conta-1");
 
     expect(load).toHaveBeenCalledWith("999999990", "mesa-1", "conta-1");
     expect(result.props.contaId).toBe("conta-1");
@@ -86,7 +82,7 @@ describe("ContaServices", () => {
       artigos: [],
     });
 
-    const result = await services.store_conta("999999990", contaDTO);
+    const result = await services.store("999999990", contaDTO);
 
     expect(store).toHaveBeenCalledTimes(1);
     const [nif, conta] = store.mock.calls[0]!;
@@ -103,7 +99,7 @@ describe("ContaServices", () => {
       stub_id_generator("id"),
     );
 
-    await services.delete_conta("999999990", "mesa-1", "conta-1");
+    await services.delete("999999990", "mesa-1", "conta-1");
 
     expect(delete_fn).toHaveBeenCalledWith("999999990", "mesa-1", "conta-1");
   });
@@ -121,7 +117,7 @@ describe("ContaServices", () => {
       stub_id_generator("generated-conta"),
     );
 
-    const result = await services.new_conta("999999990", "mesa-1", "Cliente");
+    const result = await services.new("999999990", "mesa-1", "Cliente");
 
     expect(store).toHaveBeenCalledTimes(1);
     const [nif, conta] = store.mock.calls[0]!;
@@ -153,7 +149,7 @@ describe("ContaServices", () => {
       stub_id_generator("id"),
     );
 
-    const result = await services.set_conta(
+    const result = await services.set(
       "999999990",
       "mesa-1",
       "conta-1",
@@ -170,13 +166,15 @@ describe("ContaServices", () => {
   it("add_artigo_conta adds artigo, stores conta and returns DTO", async () => {
     const conta = Conta.new("999999990", "conta-1", "mesa-1", "Cliente");
     const load = vi.fn().mockResolvedValue(conta);
-    const store = vi.fn().mockImplementation(async (_nif, stored: Conta) => stored);
+    const store = vi
+      .fn()
+      .mockImplementation(async (_nif, stored: Conta) => stored);
     const services = new ContaServices(
       stub_conta_repo({ load, store }),
       stub_id_generator("id"),
     );
 
-    const result = await services.add_artigo_conta(
+    const result = await services.addArtigo(
       "999999990",
       "mesa-1",
       "conta-1",
@@ -194,13 +192,15 @@ describe("ContaServices", () => {
     const conta = Conta.new("999999990", "conta-1", "mesa-1", "Cliente");
     conta.addArtigo("A1");
     const load = vi.fn().mockResolvedValue(conta);
-    const store = vi.fn().mockImplementation(async (_nif, stored: Conta) => stored);
+    const store = vi
+      .fn()
+      .mockImplementation(async (_nif, stored: Conta) => stored);
     const services = new ContaServices(
       stub_conta_repo({ load, store }),
       stub_id_generator("id"),
     );
 
-    const result = await services.add_artigo_conta(
+    const result = await services.addArtigo(
       "999999990",
       "mesa-1",
       "conta-1",
@@ -218,13 +218,15 @@ describe("ContaServices", () => {
     const conta = Conta.new("999999990", "conta-1", "mesa-1", "Cliente");
     conta.addArtigo("A1");
     const load = vi.fn().mockResolvedValue(conta);
-    const store = vi.fn().mockImplementation(async (_nif, stored: Conta) => stored);
+    const store = vi
+      .fn()
+      .mockImplementation(async (_nif, stored: Conta) => stored);
     const services = new ContaServices(
       stub_conta_repo({ load, store }),
       stub_id_generator("id"),
     );
 
-    const result = await services.remove_artigo_conta(
+    const result = await services.removeArtigo(
       "999999990",
       "mesa-1",
       "conta-1",
@@ -246,12 +248,7 @@ describe("ContaServices", () => {
     );
 
     await expect(
-      services.remove_artigo_conta(
-        "999999990",
-        "mesa-1",
-        "conta-1",
-        "MISSING",
-      ),
+      services.removeArtigo("999999990", "mesa-1", "conta-1", "MISSING"),
     ).rejects.toThrow("Artigo não encontrado!");
   });
 });

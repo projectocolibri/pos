@@ -69,32 +69,18 @@ export function create_test_app(services: TestServices): Express {
   app.post("/mesa/new", (req, res) => mesaController.new(req, res));
   app.put("/mesa/set", (req, res) => mesaController.set(req, res));
 
-  app.get("/conta/count_conta", (req, res) =>
-    contaController.count_conta(req, res),
+  app.get("/conta/count", (req, res) => contaController.count(req, res));
+  app.get("/conta/list", (req, res) => contaController.list(req, res));
+  app.get("/conta/load", (req, res) => contaController.load(req, res));
+  app.post("/conta/store", (req, res) => contaController.store(req, res));
+  app.delete("/conta/delete", (req, res) => contaController.delete(req, res));
+  app.post("/conta/new", (req, res) => contaController.new(req, res));
+  app.put("/conta/set", (req, res) => contaController.set(req, res));
+  app.post("/conta/addArtigo", (req, res) =>
+    contaController.addArtigo(req, res),
   );
-  app.get("/conta/list_conta", (req, res) =>
-    contaController.list_conta(req, res),
-  );
-  app.get("/conta/load_conta", (req, res) =>
-    contaController.load_conta(req, res),
-  );
-  app.post("/conta/store_conta", (req, res) =>
-    contaController.store_conta(req, res),
-  );
-  app.delete("/conta/delete_conta", (req, res) =>
-    contaController.delete_conta(req, res),
-  );
-  app.post("/conta/new_conta", (req, res) =>
-    contaController.new_conta(req, res),
-  );
-  app.put("/conta/set_conta", (req, res) =>
-    contaController.set_conta(req, res),
-  );
-  app.post("/conta/add_artigo", (req, res) =>
-    contaController.add_artigo_conta(req, res),
-  );
-  app.delete("/conta/remove_artigo", (req, res) =>
-    contaController.remove_artigo_conta(req, res),
+  app.delete("/conta/removeArtigo", (req, res) =>
+    contaController.removeArtigo(req, res),
   );
 
   app.use(errorLoggingMiddleware());

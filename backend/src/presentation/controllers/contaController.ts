@@ -9,54 +9,45 @@ export class ContaController {
     @inject(ContaServices) private readonly contaServices: ContaServices,
   ) {}
 
-  async count_conta(req: Request, res: Response): Promise<void> {
-    const { nifEmpresa, mesaId } = ContaRequests.count_conta(req);
-    const count = await this.contaServices.count_conta(nifEmpresa, mesaId);
+  async count(req: Request, res: Response): Promise<void> {
+    const { nifEmpresa, mesaId } = ContaRequests.count(req);
+    const count = await this.contaServices.count(nifEmpresa, mesaId);
     res.status(200).json(count);
   }
 
-  async list_conta(req: Request, res: Response): Promise<void> {
-    const { nifEmpresa, mesaId } = ContaRequests.list_conta(req);
-    const list = await this.contaServices.list_conta(nifEmpresa, mesaId);
+  async list(req: Request, res: Response): Promise<void> {
+    const { nifEmpresa, mesaId } = ContaRequests.list(req);
+    const list = await this.contaServices.list(nifEmpresa, mesaId);
     res.status(200).json(list);
   }
 
-  async load_conta(req: Request, res: Response): Promise<void> {
-    const { nifEmpresa, mesaId, contaId } = ContaRequests.load_conta(req);
-    const load = await this.contaServices.load_conta(
-      nifEmpresa,
-      mesaId,
-      contaId,
-    );
+  async load(req: Request, res: Response): Promise<void> {
+    const { nifEmpresa, mesaId, contaId } = ContaRequests.load(req);
+    const load = await this.contaServices.load(nifEmpresa, mesaId, contaId);
     res.status(200).json(load);
   }
 
-  async store_conta(req: Request, res: Response): Promise<void> {
-    const { nifEmpresa, contaDTO } = ContaRequests.store_conta(req);
-    const store = await this.contaServices.store_conta(nifEmpresa, contaDTO);
+  async store(req: Request, res: Response): Promise<void> {
+    const { nifEmpresa, contaDTO } = ContaRequests.store(req);
+    const store = await this.contaServices.store(nifEmpresa, contaDTO);
     res.status(200).json(store);
   }
 
-  async delete_conta(req: Request, res: Response): Promise<void> {
-    const { nifEmpresa, mesaId, contaId } = ContaRequests.delete_conta(req);
-    await this.contaServices.delete_conta(nifEmpresa, mesaId, contaId);
+  async delete(req: Request, res: Response): Promise<void> {
+    const { nifEmpresa, mesaId, contaId } = ContaRequests.delete(req);
+    await this.contaServices.delete(nifEmpresa, mesaId, contaId);
     res.status(200).json({ message: "Conta apagada com sucesso!" });
   }
 
-  async new_conta(req: Request, res: Response): Promise<void> {
-    const { nifEmpresa, mesaId, nome } = ContaRequests.new_conta(req);
-    const newConta = await this.contaServices.new_conta(
-      nifEmpresa,
-      mesaId,
-      nome,
-    );
+  async new(req: Request, res: Response): Promise<void> {
+    const { nifEmpresa, mesaId, nome } = ContaRequests.new(req);
+    const newConta = await this.contaServices.new(nifEmpresa, mesaId, nome);
     res.status(201).json(newConta);
   }
 
-  async set_conta(req: Request, res: Response): Promise<void> {
-    const { nifEmpresa, mesaId, contaId, key, value } =
-      ContaRequests.set_conta(req);
-    const set = await this.contaServices.set_conta(
+  async set(req: Request, res: Response): Promise<void> {
+    const { nifEmpresa, mesaId, contaId, key, value } = ContaRequests.set(req);
+    const set = await this.contaServices.set(
       nifEmpresa,
       mesaId,
       contaId,
@@ -66,10 +57,10 @@ export class ContaController {
     res.status(200).json(set);
   }
 
-  async add_artigo_conta(req: Request, res: Response): Promise<void> {
+  async addArtigo(req: Request, res: Response): Promise<void> {
     const { nifEmpresa, mesaId, contaId, codigoArtigo } =
-      ContaRequests.add_artigo_conta(req);
-    const add = await this.contaServices.add_artigo_conta(
+      ContaRequests.addArtigo(req);
+    const add = await this.contaServices.addArtigo(
       nifEmpresa,
       mesaId,
       contaId,
@@ -78,10 +69,10 @@ export class ContaController {
     res.status(200).json(add);
   }
 
-  async remove_artigo_conta(req: Request, res: Response): Promise<void> {
+  async removeArtigo(req: Request, res: Response): Promise<void> {
     const { nifEmpresa, mesaId, contaId, codigoArtigo } =
-      ContaRequests.remove_artigo_conta(req);
-    const remove = await this.contaServices.remove_artigo_conta(
+      ContaRequests.removeArtigo(req);
+    const remove = await this.contaServices.removeArtigo(
       nifEmpresa,
       mesaId,
       contaId,
